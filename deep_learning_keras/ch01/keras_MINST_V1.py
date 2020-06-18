@@ -1,4 +1,3 @@
-from __future__ import print_function
 import numpy as np
 from keras.datasets import mnist
 from keras.models import Sequential
@@ -11,7 +10,7 @@ from make_tensorboard import make_tensorboard
 np.random.seed(1671)  # for reproducibility
 
 # network and training
-NB_EPOCH = 200
+NB_EPOCH = 20
 BATCH_SIZE = 128
 VERBOSE = 1
 NB_CLASSES = 10   # number of outputs = number of digits
