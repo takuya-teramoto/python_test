@@ -38,6 +38,8 @@ def model(x_obs, y_obs=None):
     y_mu = a * x_obs + b
     y_sigma = numpyro.sample('y_sigma', dist.Uniform(0, 10))
     numpyro.sample('y', dist.Normal(y_mu, y_sigma), obs=y_obs)
+    
+    numpyro.deterministic('test', a*x_obs) # deterministicを使えば、勾配などを算出しておくことも可能なはず
 
 # memo
 # type(x_obs)
