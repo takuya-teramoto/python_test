@@ -27,12 +27,12 @@ os.environ['KMP_DUPLICATE_LIB_OK']='TRUE'
 
 # データ読み込み
 df = pd.read_csv(os.path.join(os.getcwd(), 'all_with_frac_dim.csv'))
-df_columns = ['ask', 'bid', 'high', 'last', 'low', 'volume', 'fractal_dim', 'R2']
+df_columns = ['ask', 'bid', 'ask_12', 'ask_24', 'ask_36', 'ask_48', 'high', 'last', 'low', 'volume', 'fractal_dim', 'R2']
 df = df.loc[:, df_columns]
 mean = df.mean().values.reshape(-1, df.shape[1])
 std = df.std().values.reshape(-1, df.shape[1])
 df = df.dropna(how='any', axis=0)
-df = (df - mean) / std # 標準化（仮）
+# df = (df - mean) / std # 標準化（仮）
 array = df.values
 
 # 時系列方向に切り出す長さの設定
@@ -59,13 +59,12 @@ y = np.zeros((data_size, output_dim))
 for i in range(data_size):
     # 説明変数
     tmp_X = array[i:i+time_len, :]
-    # tmp_X = (tmp_X - array[i+time_len-1, :]) / std
+    tmp_X = (tmp_X - array[i+time_len-1, :]) / std
     shape_X = tmp_X.shape
     tmp_X = tmp_X.reshape(-1, shape_X[0], shape_X[1])
     
     # 目的変数
-    # tmp_y = ((array[i+time_len+delay-1, 0:2] / array[i+time_len-1, 0:2]) - 1) * 100
-    tmp_y = array[i+time_len+delay-1, 0:2] - array[i+time_len-1, 0:2]
+    tmp_y = ((array[i+time_len+delay-1, 0:2] / array[i+time_len-1, 0:2]) - 1) * 100
     shape_y = tmp_y.shape
     tmp_y = tmp_y.reshape(-1, shape_y[0])
     
